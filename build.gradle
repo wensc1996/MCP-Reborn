@@ -33,11 +33,11 @@ group = 'me.yourname'
 version = '1.0.0'
 
 ext {
-    minecraft_version = '1.18.2'
-    mcp_version = '20220228.144236'
+    minecraft_version = '1.19.2'
+    mcp_version = '20220805.130853'
     mappings_channel = 'official'
-    mappings_version = '1.18.2'
-    spi_version = '4.0.10'
+    mappings_version = '1.19.2'
+    spi_version = '6.0.0'
 }
 
 repositories {
@@ -88,11 +88,13 @@ task runclient(type: JavaExec) {
     args '--gameDir', '.'
     args '--version', minecraft_version
     args '--assetsDir', downloadAssets.output
-    args '--assetIndex', "1.18"
+    args '--assetIndex', "1.19"
     args '--accessToken', '0'
     main 'net.minecraft.client.main.Main'
     workingDir 'run'
 }
+
+
 
 task setup() {
     group = "MCP"
@@ -114,6 +116,16 @@ task copyAssets {
         from downloadAssets.output.path
         into 'run/assets'
     }
+}
+
+task runserver(type: JavaExec) {
+    mkdir 'runserver'
+    group = "MCP"
+    description = "Runs the server"
+    standardInput = System.in
+    classpath sourceSets.main.runtimeClasspath
+    main 'net.minecraft.server.Main'
+    workingDir 'runserver'
 }
 
 idea.project.settings {
